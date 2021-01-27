@@ -642,7 +642,7 @@ void advanced_inventory::recalc_pane( side p )
 
     // Sort all items
     std::stable_sort( pane.items.begin(), pane.items.end(), advanced_inv_sorter( pane.sortby,
-                      reverse_sort ) );
+                      pane.reverse_sort ) );
 
 }
 
@@ -1116,8 +1116,7 @@ bool advanced_inventory::show_sort_menu( advanced_inventory_pane &pane )
     sm.query();
 
     if( sm.ret == 10 ) {
-        reverse_sort = !reverse_sort;
-
+        pane.reverse_sort = !pane.reverse_sort;
         return true;
     }
 

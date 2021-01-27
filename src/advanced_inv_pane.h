@@ -72,6 +72,7 @@ class advanced_inventory_pane
          */
         int index = 0;
         advanced_inv_sortby sortby = advanced_inv_sortby::SORTBY_NONE;
+        bool reverse_sort = false;
         catacurses::window window;
         std::vector<advanced_inv_listitem> items;
         /**
