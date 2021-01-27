@@ -443,15 +443,18 @@ void advanced_inventory::print_items( const advanced_inventory_pane &pane, bool 
 
 struct advanced_inv_sorter {
     advanced_inv_sortby sortby;
-    advanced_inv_sorter( advanced_inv_sortby sort ) {
+    bool reverse_sort;
+    bool sort_value;
+    advanced_inv_sorter( advanced_inv_sortby sort, bool reverse ) {
         sortby = sort;
+        reverse_sort = reverse;
     }
     bool operator()( const advanced_inv_listitem &d1, const advanced_inv_listitem &d2 ) {
         // Note: the item pointer can only be null on sort by category, otherwise it is always valid.
         switch( sortby ) {
             case SORTBY_NONE:
                 if( d1.idx != d2.idx ) {
-                    return d1.idx < d2.idx;
+                    sort_value = d1.idx < d2.idx;
                 }
                 break;
             case SORTBY_NAME:
@@ -459,27 +462,27 @@ struct advanced_inv_sorter {
                 break;
             case SORTBY_WEIGHT:
                 if( d1.weight != d2.weight ) {
-                    return d1.weight > d2.weight;
+                    sort_value = d1.weight > d2.weight;
                 }
                 break;
             case SORTBY_VOLUME:
                 if( d1.volume != d2.volume ) {
-                    return d1.volume > d2.volume;
+                    sort_value = d1.volume > d2.volume;
                 }
                 break;
             case SORTBY_CHARGES:
                 if( d1.items.front()->charges != d2.items.front()->charges ) {
-                    return d1.items.front()->charges > d2.items.front()->charges;
+                    sort_value = d1.items.front()->charges > d2.items.front()->charges;
                 }
                 break;
             case SORTBY_CATEGORY:
                 if( d1.cat != d2.cat ) {
-                    return d1.cat < d2.cat;
+                    sort_value = d1.cat < d2.cat;
                 }
                 break;
             case SORTBY_DAMAGE:
                 if( d1.items.front()->damage() != d2.items.front()->damage() ) {
-                    return d1.items.front()->damage() < d2.items.front()->damage();
+                    sort_value = d1.items.front()->damage() < d2.items.front()->damage();
                 }
                 break;
             case SORTBY_AMMO: {
@@ -521,15 +524,24 @@ struct advanced_inv_sorter {
             break;
             case SORTBY_SPOILAGE:
                 if( d1.items.front()->spoilage_sort_order() != d2.items.front()->spoilage_sort_order() ) {
-                    return d1.items.front()->spoilage_sort_order() < d2.items.front()->spoilage_sort_order();
+                    sort_value = d1.items.front()->spoilage_sort_order() < d2.items.front()->spoilage_sort_order();
                 }
                 break;
             case SORTBY_PRICE:
                 if( d1.items.front()->price( true ) != d2.items.front()->price( true ) ) {
-                    return d1.items.front()->price( true ) > d2.items.front()->price( true );
+                    sort_value = d1.items.front()->price( true ) > d2.items.front()->price( true );
                 }
                 break;
         }
+
+        if( sortby != SORTBY_NAME ) {
+            if( !reverse_sort ) {
+                return sort_value;
+            } else {
+                return !sort_value;
+            }
+        }
+
         // secondary sort by name
         const std::string *n1;
         const std::string *n2;
@@ -542,7 +554,13 @@ struct advanced_inv_sorter {
             n1 = &d1.name_without_prefix;
             n2 = &d2.name_without_prefix;
         }
-        return localized_compare( *n1, *n2 );
+
+        if( !reverse_sort ) {
+            return localized_compare( *n1, *n2 );
+        } else {
+            return !localized_compare( *n1, *n2 );
+        }
+
     }
 };
 
