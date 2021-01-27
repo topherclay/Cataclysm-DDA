@@ -56,6 +56,7 @@ void advanced_inventory_pane::load_settings( int saved_area_idx,
                         has_map_items ? false : square.can_store_in_vehicle();
     set_area( square, show_vehicle );
     sortby = static_cast<advanced_inv_sortby>( save_state->sort_idx );
+    reverse_sort = save_state->reverse_sort;
     index = save_state->selected_idx;
     filter = save_state->filter;
 }
