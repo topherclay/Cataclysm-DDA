@@ -35,6 +35,7 @@ void advanced_inventory_pane::save_settings()
     save_state->selected_idx = index;
     save_state->filter = filter;
     save_state->sort_idx = sortby;
+    save_state->reverse_sort = reverse_sort;
 }
 
 void advanced_inventory_pane::load_settings( int saved_area_idx,
