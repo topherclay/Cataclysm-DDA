@@ -17,6 +17,7 @@ class item;
 struct advanced_inv_pane_save_state {
     public:
         int sort_idx = 1;
+        bool reverse_sort = false;
         std::string filter;
         int area_idx = 11;
         int selected_idx = 0;
@@ -26,6 +27,7 @@ struct advanced_inv_pane_save_state {
         template<typename JsonStream>
         void serialize( JsonStream &json, const std::string &prefix ) const {
             json.member( prefix + "sort_idx", sort_idx );
+            json.member( prefix + "reverse_sort", reverse_sort );
             json.member( prefix + "filter", filter );
             json.member( prefix + "area_idx", area_idx );
             json.member( prefix + "selected_idx", selected_idx );
@@ -34,6 +36,7 @@ struct advanced_inv_pane_save_state {
 
         void deserialize( const JsonObject &jo, const std::string &prefix ) {
             jo.read( prefix + "sort_idx", sort_idx );
+            jo.read( prefix + "reverse_sort", reverse_sort );
             jo.read( prefix + "filter", filter );
             jo.read( prefix + "area_idx", area_idx );
             jo.read( prefix + "selected_idx", selected_idx );
