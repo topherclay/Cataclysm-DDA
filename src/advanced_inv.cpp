@@ -641,8 +641,8 @@ void advanced_inventory::recalc_pane( side p )
     }
 
     // Sort all items
-    std::stable_sort(pane.items.begin(), pane.items.end(), advanced_inv_sorter(pane.sortby,
-        reverse_sort));
+    std::stable_sort( pane.items.begin(), pane.items.end(), advanced_inv_sorter( pane.sortby,
+                      reverse_sort ) );
 
 }
 
@@ -1108,11 +1108,19 @@ bool advanced_inventory::show_sort_menu( advanced_inventory_pane &pane )
     sm.addentry( SORTBY_AMMO,     true, 'a', get_sortname( SORTBY_AMMO ) );
     sm.addentry( SORTBY_SPOILAGE,   true, 's', get_sortname( SORTBY_SPOILAGE ) );
     sm.addentry( SORTBY_PRICE, true, 'b', get_sortname( SORTBY_PRICE ) );
+    sm.addentry( -1, true, 'r', _( "reverse sort." ) );
     // Pre-select current sort.
     sm.selected = pane.sortby - SORTBY_NONE;
     // Calculate key and window variables, generate window,
     // and loop until we get a valid answer.
     sm.query();
+
+    if( sm.ret == -1 ) {
+        reverse_sort = !reverse_sort;
+        return true;
+    }
+
+
     if( sm.ret < SORTBY_NONE ) {
         return false;
     }
