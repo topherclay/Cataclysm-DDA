@@ -500,25 +500,25 @@ struct advanced_inv_sorter {
                         // For items with the same ammo type, we sort:
                         // guns > tools > magazines > ammunition
                         if( d1.items.front()->is_gun() && !d2.items.front()->is_gun() ) {
-                            return true;
+                            sort_value = true;
                         }
                         if( !d1.items.front()->is_gun() && d2.items.front()->is_gun() ) {
-                            return false;
+                            sort_value = false;
                         }
                         if( d1.items.front()->is_tool() && !d2.items.front()->is_tool() ) {
-                            return true;
+                            sort_value = true;
                         }
                         if( !d1.items.front()->is_tool() && d2.items.front()->is_tool() ) {
-                            return false;
+                            sort_value = false;
                         }
                         if( d1.items.front()->is_magazine() && d2.items.front()->is_ammo() ) {
-                            return true;
+                            sort_value = true;
                         }
                         if( d2.items.front()->is_magazine() && d1.items.front()->is_ammo() ) {
-                            return false;
+                            sort_value = false;
                         }
                     }
-                    return localized_compare( a1, a2 );
+                    sort_value = localized_compare( a1, a2 );
                 }
             }
             break;
