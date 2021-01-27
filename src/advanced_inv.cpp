@@ -621,8 +621,14 @@ void advanced_inventory::recalc_pane( side p )
     } else {
         pane.add_items_from_area( squares[pane.get_area()] );
     }
+
     // Sort all items
-    std::stable_sort( pane.items.begin(), pane.items.end(), advanced_inv_sorter( pane.sortby ) );
+    if( !reverse_sort ) {
+        std::stable_sort( pane.items.begin(), pane.items.end(), advanced_inv_sorter( pane.sortby ) );
+    } else {
+        std::stable_sort( pane.items.begin(), pane.items.end(), !advanced_inv_sorter( pane.sortby ) );
+    }
+
 }
 
 void advanced_inventory::redraw_pane( side p )

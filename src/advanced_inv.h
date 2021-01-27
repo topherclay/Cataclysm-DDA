@@ -134,6 +134,7 @@ class advanced_inventory
         bool is_processing() const;
 
         static std::string get_sortname( advanced_inv_sortby sortby );
+        bool reverse_sort = false;
         bool move_all_items( bool nested_call = false );
         void print_items( const advanced_inventory_pane &pane, bool active );
         void recalc_pane( side p );
