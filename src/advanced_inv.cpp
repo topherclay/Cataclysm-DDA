@@ -164,6 +164,8 @@ std::string advanced_inventory::get_sortname( advanced_inv_sortby sortby )
             return _( "spoilage" );
         case SORTBY_PRICE:
             return _( "barter value" );
+        case SORTBY_REVERSE:
+            return _("reverse");
     }
     return "!BUG!";
 }
@@ -1108,14 +1110,14 @@ bool advanced_inventory::show_sort_menu( advanced_inventory_pane &pane )
     sm.addentry( SORTBY_AMMO,     true, 'a', get_sortname( SORTBY_AMMO ) );
     sm.addentry( SORTBY_SPOILAGE,   true, 's', get_sortname( SORTBY_SPOILAGE ) );
     sm.addentry( SORTBY_PRICE, true, 'b', get_sortname( SORTBY_PRICE ) );
-    sm.addentry( 10, true, 'r', _( "reverse sort." ) );
+    sm.addentry( SORTBY_REVERSE, true, 'r', _( "reverse sort." ) );
     // Pre-select current sort.
     sm.selected = pane.sortby - SORTBY_NONE;
     // Calculate key and window variables, generate window,
     // and loop until we get a valid answer.
     sm.query();
 
-    if( sm.ret == 10 ) {
+    if( sm.ret == SORTBY_REVERSE ) {
         pane.reverse_sort = !pane.reverse_sort;
         return true;
     }
